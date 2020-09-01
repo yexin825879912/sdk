@@ -5,7 +5,7 @@ export default (appInfo: EggAppInfo) => {
 
   // override config from framework / plugin
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1598752817382_8354';
+  config.keys = appInfo.name + '_1598862275028_3890';
 
   // add your egg config in here
   config.middleware = [];
