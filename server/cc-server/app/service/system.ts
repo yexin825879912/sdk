@@ -35,7 +35,7 @@ export default class SystemService extends Service {
       }
 
       // 如果是配置的集群 计算规则从其中选出一台服务器
-      const connections = await ctx.service.baseModel.app_push_client.aggregatePushServerIp();
+      const connections = await ctx.service.base.app_push_client.aggregatePushServerIp();
       let minConnectionCount = -1;
       let minConnectionService = '';
 
@@ -135,7 +135,7 @@ export default class SystemService extends Service {
       let twoWeeksAgoDate = app.m7Utils.DateTime.getStartDate(14);
       twoWeeksAgoDate = twoWeeksAgoDate.replace(/-/g, '');
 
-      const dbConfig = await ctx.service.baseModel.system_update_config.findGteTwoWeeksAgoDate(twoWeeksAgoDate);
+      const dbConfig = await ctx.service.base.system_update_config.findGteTwoWeeksAgoDate(twoWeeksAgoDate);
       const resultList: any[] = [];
       const tempList: any[] = [];
       for (const config of dbConfig) {
@@ -165,7 +165,7 @@ export default class SystemService extends Service {
     const { ctx } = this;
     let attachmentMaxSize = '100mb';
     try {
-      const kv = await ctx.service.baseConfig.consul.getKV({ key: '_constants/attachment_max_size' });
+      const kv = await ctx.service.consul.getKV({ key: '_constants/attachment_max_size' });
       if (kv.success && kv.data && kv.data.Value) {
         attachmentMaxSize = kv.data.Value;
       }
@@ -189,7 +189,7 @@ export default class SystemService extends Service {
     }
 
     try {
-      const res = await ctx.service.baseConfig.consul.getKV({ key: '_constants/domains_7moor' });
+      const res = await ctx.service.consul.getKV({ key: '_constants/domains_7moor' });
       let isOem = false;
 
       if (res.success && res.data && res.data.Value && bizData.domain) {
@@ -225,7 +225,7 @@ export default class SystemService extends Service {
         }
     }
    */
-  private async getCcSocketPush() {
+  private async getCcSocketPush(): Promise<{domain: any; services: any} | undefined> {
     const { ctx, app } = this;
     try {
       const serviceInfo = app.m7Consul.serviceInfo;
@@ -238,12 +238,12 @@ export default class SystemService extends Service {
         version_tag = serviceInfo.remote_version;
       }
       const key = `_gw/_vt_${version_tag}/_sn_${serviceName}/domain_weight`;
-      const domain = await ctx.service.baseConfig.consul.getKV({ key });
+      const domain = await ctx.service.consul.getKV({ key });
       if (!domain || !domain.success || !domain.data) {
         return;
       }
       // 获取健康的cc-socket-push服务
-      const internalServices = await ctx.service.baseConfig.consul.getServiceAddress({
+      const internalServices = await ctx.service.consul.getServiceAddress({
         service: serviceName,
         passing: true,
         tag: version_tag,

@@ -1,6 +1,7 @@
 import { Service } from 'egg';
 
 /**
+ * cc数据库
  * 'app_push_client', // 坐席PC端表结构
  */
 // eslint-disable-next-line @typescript-eslint/class-name-casing

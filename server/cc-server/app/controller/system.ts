@@ -56,7 +56,7 @@ export default class SystemController extends Controller {
         isNew: true,
         list: updateFiles,
         // ...oemInfo,
-        // isOem,
+        isOem,
         platform_urls: platformUrls,
         // is_open_slider: isSliderOpen,
         // isRealTimeExport,

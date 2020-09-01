@@ -1,7 +1,9 @@
 import { Service } from 'egg';
 
 /**
+ * cc数据库
  * 'system_update_config', // 系统更新设置
+ * db.getCollection('system_update_config').find({})
  */
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export default class System_update_config extends Service {
@@ -22,7 +24,7 @@ export default class System_update_config extends Service {
       }
       return dbConfig;
     } catch (error) {
-      ctx.logger.error('App_push_client-aggregatePushServerIp', error);
+      ctx.logger.error('System_update_config-findGteTwoWeeksAgoDate', error);
     }
   }
 }
